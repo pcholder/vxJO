@@ -1,0 +1,55 @@
+plugins {
+    id 'application'
+    id 'java'
+}
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+mainClassName = "vxJOLaunch"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    compile 'io.vertx:vertx-core:4.1.0'
+    compile 'io.vertx:vertx-web-client:4.1.0'
+    compile 'io.vertx:vertx-web:4.1.0'
+    compile 'io.vertx:vertx-pg-client:4.1.0'
+
+    implementation 'io.vertx:vertx-sql-client-templates:4.1.0'
+
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.1'
+    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.11.1'
+
+    testCompile 'io.vertx:vertx-junit5:4.1.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+
+test {
+    useJUnitPlatform()
+    // Always run tests, even when nothing changed.
+    dependsOn 'cleanTest'
+
+    // Show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+tasks.named('jar') {
+    manifest {
+        attributes('Main-Class': mainClassName,
+                'Implementation-Title': project.name,
+                'Implementation-Version': project.version)
+    }
+}
